@@ -31,21 +31,51 @@ class Team
     private $presupuesto_actual;
 
     /**
-     * @ORM\OneToMany(targetEntity="Player", mappedBy="team")
+     * @ORM\OneToMany(targetEntity="App\Entity\Player", mappedBy="team")
      */
     private $players;
 
     /**
-     * @ORM\OneToMany(targetEntity="Coach", mappedBy="team")
+     * @ORM\OneToOne(targetEntity="App\Entity\Coach", mappedBy="team")
      */
-    private $coaches;
+    private $coach;
 
     public function __construct()
     {
         $this->players = new ArrayCollection();
-        $this->coaches = new ArrayCollection();
     }
 
+    public function getPlayers()
+    {
+        return $this->players;
+    }
+
+    public function addPlayer(Player $player)
+    {
+        $player->setTeam($this);
+        $this->players->add($player);
+    }
+
+    public function removePlayer(Player $player)
+    {
+        $this->players->removeElement($player);
+    }
+
+    public function getCoach(): ?coach
+    {
+        return $this->coach;
+    }
+
+    public function setCoach(?coach $coach): void
+    {
+        if ($coach !== null && $this->coach !==null) {
+            throw new \LogicException('This club already has a coach associated with it.');
+        }
+        $this->coach = $coach;
+        if ($coach !== null) {
+            $coach->setTeam($this);
+        }
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -72,54 +102,9 @@ class Team
         return $this;
     }
 
-    /**
-     * @return Collection|Player[]
-     */
-
-    public function getPlayers(): Collection
-    {
-        return $this->players;
-    }
-
-    public function addPlayer(Player  $player): self
-    {
-        if (!$this->players->contains($player)) {
-            $this->players[] = $player;
-            $player->setTeam($this);
-        }
-        return $this;
-    }
-
-    public function removePlayer(Player $player): self
-    {
-        if ($this->players->removeElement($player)){
-            if ($player->getTeam() === $this) {
-                $player->setTeam(null);
-            }
-        }
-        return $this;
-    }
-
-    /**
-     * @return Collection|Coach[]
-     */
-    public function getCoaches(): Collection
-    {
-        return $this->coaches;
-    }
-
-    public function addCoach(Coach $coach): self
-    {
-        if (!$this->coaches->contains($coach)) {
-            $this->coaches[] = $coach;
-            $coach->setTeam($this);
-        }
-        return $this;
-    }
-
     public function removeCoach(Coach $coach): self
     {
-        if ($this->coaches->removeElement($coach)) {
+        if ($this->coach->removeElement($coach)) {
             if ($coach->getTeam() === $this) {
                 $coach->setTeam(null);
             }

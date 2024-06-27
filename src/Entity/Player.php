@@ -29,7 +29,7 @@ class Player
     private $salario;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="players")
+     * @ORM\OneToOne(targetEntity="Team", inversedBy="players")
      * @ORM\JoinColumn(name=club_id, referencedColumnName="id", onDelete="SET NULL")
      */
     private $team;

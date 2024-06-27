@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Coach;
+use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,9 +18,34 @@ class CoachController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(EntityManagerInterface $entityManager): JsonResponse
+    public function index(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
-        $coaches = $entityManager->getRepository(Coach::class)->findAll();
+        $clubId = $request->query->get('club_id');
+        $filter = $request->query->get('filter');
+        $page = $request->query->getInt('page', 1);
+        $perpage = $request->query->getInt('perpage', 10);
+
+        $qb = $entityManager->createQueryBuilder();
+        $qb->select('c')
+            ->from(Coach::class, 'c');
+
+        if ($clubId) {
+            $qb->andWhere('c.team IS NOT NULL')
+                ->leftjoin('c.team', 't')
+                ->andWhere('t.id = :clubId')
+                ->setParameter('clubId', $clubId);
+        }
+
+        if ($filter) {
+            $qb->andWhere('c.name LIKE :filter')
+                ->setParameter('filter', '%' . $filter . '%');
+        }
+
+        $qb->setFirstResult(($page - 1) * $perpage)
+            ->setMaxResults($perpage);
+
+        $coaches = $qb->getQuery()->getResult();
+
         return $this->json($coaches);
     }
 
@@ -44,12 +70,82 @@ class CoachController extends AbstractController
 
         $coach = new Coach();
         $coach->setNombre($data['nombre']);
+
+        if (isset($data['club_id'])) {
+            $club = $entityManager->getRepository(Team::class)->find($data['club_id']);
+            if (!$club) {
+                return $this->json(['message' => 'Club not found'], 404);
+            }
+            if ($club->getCoach() !== null) {
+                return $this->json(['message' => 'The club already has a coach assigned'], 409);
+            }
+            if ($club->getPresupuestoActual() < $data['salario']) {
+                return $this->json(['message' => 'Insufficient club budget.'], 409);
+            }
+            $coach->setTeam($club);
+            $club->addCoach($coach);
+            $club->setPresupuestoActual($club->getPresupuestoActual() - $data['salario']);
+
+        }
         $coach->setSalario($data['salario']);
 
         $entityManager->persist($coach);
         $entityManager->flush();
 
         return $this->json($coach, 201);
+    }
+
+    /**
+     * @Route("/{id}/assign-to-club", name="assign_to_club", methods={"POST"})
+     */
+    public function assignToClub(Coach $coach, Request $request, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $data = json_decode($request->getContent(), true);
+        $clubId = $data['club_id'];
+        $salario = $data['salario'];
+
+        $club = $entityManager->getRepository(Team::class)->find($clubId);
+        if (!$club) {
+            return $this->json(['message' => 'Club not found'], 404);
+        }
+        if ($club->getCoach() !== null) {
+            return $this->json(['message' => 'The club specified already has a coach assigned.'], 409);
+        }
+        if ($coach->getTeam() !== null) {
+            return $this->json(['message' => 'The coach is already assigned to another club.'], 409);
+        }
+        if ($club->getPresupuestoActual() < $salario) {
+            return $this->json(['message' => 'Insufficient club budget.'], 400);
+        }
+
+        $coach->setTeam($club);
+        $coach->setSalario($salario);
+        $club->setCoach($coach);
+        $club->setPresupuestoActual($club->getPresupuestoActual() - $salario);
+
+        $entityManager->flush();
+
+        return $this->json($coach, 200);
+    }
+
+    /**
+     * @Route("/{id}/remove-from-club", name="remove_from_club", methods={"POST"})
+     */
+    public function removeFromClub(Coach $coach, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $club = $coach->getTeam();
+        if (!$club) {
+            return $this->json(['message' => 'This coach has not been assigned to any club.'], 400);
+        }
+
+        $club->setPresupuestoActual($club->getPresupuestoActual() + $coach->getSalario());
+
+        $coach->setTeam(null);
+        $club->removeCoach($coach);
+
+        $entityManager->flush();
+
+        return $this->json(['message' => 'Coach removed from club successfully'], 200);
     }
 
     /**
