@@ -30,7 +30,7 @@ class TeamController extends AbstractController
     public function show(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $team = $entityManager->getRepository(Team::class)->find($id);
-        if (!team) {
+        if (!$team) {
             return $this->json(['message' => 'Team not found'], 404);
         }
         return $this->json($team);

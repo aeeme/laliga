@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Player;
 use App\Entity\Team;
+use App\Notification\Notifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class PlayerController extends AbstractController
 {
+    private Notifier $notifier;
+
+    public function __construct(Notifier $notifier)
+    {
+        $this->notifier = $notifier;
+    }
     /**
      * @Route("/", name="index", methods={"GET"})
      */
@@ -81,6 +88,8 @@ class PlayerController extends AbstractController
             $player->setTeam($club);
             $club->setPresupuestoActual($club->getPresupuestoActual() - $data['salario']);
             $club->addPlayer($player);
+
+            $this->notifier->notify('You have been assigned to a new club.', $player->getEmail());
         }
         $player->setSalario($data['salario']);
 
@@ -116,6 +125,8 @@ class PlayerController extends AbstractController
 
         $entityManager->flush();
 
+        $this->notifier->notify('You have been asigned to a new club.', $player->getEmail());
+
         return $this->json($player, 200);
     }
 
@@ -135,6 +146,8 @@ class PlayerController extends AbstractController
         $club->removePlayer($player);
 
         $entityManager->flush();
+
+        $this->notifier->notify('You have been removed from your club.', $player->getEmail());
 
         return $this->json(['message' => 'Player removed from club successfully'], 200);
     }

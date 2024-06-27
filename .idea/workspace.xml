@@ -108,6 +108,10 @@
       <path value="$PROJECT_DIR$/vendor/nikic/php-parser" />
       <path value="$PROJECT_DIR$/vendor/symfony/process" />
       <path value="$PROJECT_DIR$/vendor/symfony/maker-bundle" />
+      <path value="$PROJECT_DIR$/vendor/symfony/mime" />
+      <path value="$PROJECT_DIR$/vendor/symfony/polyfill-intl-idn" />
+      <path value="$PROJECT_DIR$/vendor/symfony/mailer" />
+      <path value="$PROJECT_DIR$/vendor/egulias/email-validator" />
     </include_path>
   </component>
   <component name="ProjectColorInfo">{
@@ -152,7 +156,7 @@
       <workItem from="1719388575498" duration="11145000" />
       <workItem from="1719408252933" duration="1830000" />
       <workItem from="1719468525372" duration="642000" />
-      <workItem from="1719474861717" duration="17325000" />
+      <workItem from="1719474861717" duration="20616000" />
     </task>
     <servers />
   </component>
