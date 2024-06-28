@@ -74,7 +74,7 @@ class PlayerController extends AbstractController
 
         $player = new Player();
         $player->setName($data['nombre']);
-        $player->setSalario($data['salario']);
+        $player->setEmail($data['email']);
 
         if (isset($data['club_id'])){
             $club = $entityManager->getRepository(Team::class)->find($data['club_id']);

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Coach;
 use App\Entity\Team;
+use App\Notification\Notifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,6 +16,12 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CoachController extends AbstractController
 {
+    private Notifier  $notifier;
+
+    public function __construct(Notifier $notifier)
+    {
+        $this->notifier = $notifier;
+    }
     /**
      * @Route("/", name="index", methods={"GET"})
      */
@@ -70,6 +77,7 @@ class CoachController extends AbstractController
 
         $coach = new Coach();
         $coach->setNombre($data['nombre']);
+        $coach->setEmail($data['email']);
 
         if (isset($data['club_id'])) {
             $club = $entityManager->getRepository(Team::class)->find($data['club_id']);
@@ -86,6 +94,7 @@ class CoachController extends AbstractController
             $club->addCoach($coach);
             $club->setPresupuestoActual($club->getPresupuestoActual() - $data['salario']);
 
+            $this->notifier->notify('You have been assigned to a new club.', $coach->getEmail());
         }
         $coach->setSalario($data['salario']);
 
@@ -125,6 +134,8 @@ class CoachController extends AbstractController
 
         $entityManager->flush();
 
+        $this->notifier->notify('You have been assigned to a new club.', $coach->getEmail());
+
         return $this->json($coach, 200);
     }
 
@@ -144,6 +155,8 @@ class CoachController extends AbstractController
         $club->removeCoach($coach);
 
         $entityManager->flush();
+
+        $this->notifier->notify('You have been removed from your club.', $coach->getEmail());
 
         return $this->json(['message' => 'Coach removed from club successfully'], 200);
     }

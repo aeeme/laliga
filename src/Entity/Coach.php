@@ -33,6 +33,11 @@ class Coach
      */
     private $team;
 
+    /**
+     * @ORM\Column(type="string", length=100)
+     */
+    private $email;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -68,6 +73,15 @@ class Coach
     public function setTeam(?Team $team): self
     {
         $this->team = $team;
+        return $this;
+    }
+
+    public function getEmail(): ?string{
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self{
+        $this->email = $email;
         return $this;
     }
 }
