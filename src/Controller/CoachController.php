@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -16,6 +17,15 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class CoachController extends AbstractController
 {
+    /**
+     * @Route("/coach", name="coach_index")
+     */
+    public function index(): Response
+    {
+        return $this->render('Coaches/index.html.twig', [
+            'controller_name' => 'CoachController',
+        ]);
+    }
     private Notifier  $notifier;
 
     public function __construct(Notifier $notifier)
@@ -25,7 +35,7 @@ class CoachController extends AbstractController
     /**
      * @Route("/", name="index", methods={"GET"})
      */
-    public function index(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function list(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $clubId = $request->query->get('club_id');
         $filter = $request->query->get('filter');

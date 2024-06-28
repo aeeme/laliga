@@ -3,3 +3,15 @@ controllers:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+team:
+    resource: '../src/Controller/TeamController.php'
+    type: annotation
+
+player:
+    resource: '../src/Controller/PlayerController.php'
+    type: annotation
+
+coach:
+    resource: './src/Controller/CoachController.php'
+    type: annotation

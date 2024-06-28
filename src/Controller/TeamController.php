@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,9 +17,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class TeamController extends AbstractController
 {
     /**
+     * @Route("/teams", name="Teams/index.html.twig)
+     */
+    public function index(): Response
+    {
+        return $this->render('Teams/index.html.twig', [
+            'controller_name' => 'TeamController',
+        ]);
+    }
+    /**
      * [Route('/', name: 'index', methods: ['GET'])]
      */
-    public function index(EntityManagerInterface $entityManager): JsonResponse
+    public function list(EntityManagerInterface $entityManager): JsonResponse
     {
         $teams = $entityManager->getRepository(Team::class)->findAll();
         return $this->json($teams);
