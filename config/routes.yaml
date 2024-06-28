@@ -13,5 +13,9 @@ player:
     type: annotation
 
 coach:
-    resource: './src/Controller/CoachController.php'
+    resource: '../src/Controller/CoachController.php'
+    type: annotation
+
+test:
+    resource: '../src/Controller/TestController.php'
     type: annotation
