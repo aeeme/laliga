@@ -22,7 +22,7 @@ class PlayerController extends AbstractController
      */
     public function index(): Response
     {
-        return $this->render('player/index.html.twig', [
+        return $this->render('Players/index.html.twig', [
             'controller_name' => 'PlayerController',
         ]);
     }
@@ -123,7 +123,7 @@ class PlayerController extends AbstractController
             return $this->json(['message' => 'Club not found'], 404);
         }
         if ($player->getTeam() !==null) {
-            return $this->json(['message' => 'Player already assigned to a club'], 400);
+            return $this->json(['message' => 'Players already assigned to a club'], 400);
         }
         if ($club->getPresupuestoActual() < $salario) {
             return $this->json(['message' => 'Insufficient club budget'], 400);
@@ -159,7 +159,7 @@ class PlayerController extends AbstractController
 
         $this->notifier->notify('You have been removed from your club.', $player->getEmail());
 
-        return $this->json(['message' => 'Player removed from club successfully'], 200);
+        return $this->json(['message' => 'Players removed from club successfully'], 200);
     }
 
     /**
@@ -169,7 +169,7 @@ class PlayerController extends AbstractController
     {
         $player = $entityManager->getRepository(Player::class)->find($id);
         if (!$player) {
-            return $this->json(['message' => 'Player not found'], 404);
+            return $this->json(['message' => 'Players not found'], 404);
         }
         $data = json_decode($request->getContent(), true);
 
@@ -188,12 +188,12 @@ class PlayerController extends AbstractController
     {
         $player = $entityManager->getRepository(Player::class)->find($id);
         if (!$player) {
-            return $this->json(['message' => 'Player not found'], 404);
+            return $this->json(['message' => 'Players not found'], 404);
         }
 
         $entityManager->remove($player);
         $entityManager->flush();
 
-        return $this->json(['message' => 'Player successfully deleted']);
+        return $this->json(['message' => 'Players successfully deleted']);
     }
 }

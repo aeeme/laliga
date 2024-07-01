@@ -1,21 +1,16 @@
-controllers:
-    resource:
-        path: ../src/Controller/
-        namespace: App\Controller
-    type: attribute
+home:
+    path: /
+    controller: App\Controller\HomeController::index
 
-team:
-    resource: '../src/Controller/TeamController.php'
-    type: annotation
+teams:
+    path: /teams
+    controller: App\Controller\TeamController::index
+    methods: GET
 
-player:
-    resource: '../src/Controller/PlayerController.php'
-    type: annotation
+coaches:
+    path: /coaches
+    controller: App\Controller\CoachController::index
 
-coach:
-    resource: '../src/Controller/CoachController.php'
-    type: annotation
-
-test:
-    resource: '../src/Controller/TestController.php'
-    type: annotation
+players:
+    path: /players
+    controller: App\Controller\PlayerController::index

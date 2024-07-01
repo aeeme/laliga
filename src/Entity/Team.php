@@ -31,7 +31,7 @@ class Team
     private $presupuesto_actual;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Player", mappedBy="team")
+     * @ORM\OneToMany(targetEntity="App\Entity\Players", mappedBy="team")
      */
     private $players;
 
