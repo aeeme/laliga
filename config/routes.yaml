@@ -5,7 +5,6 @@ home:
 teams:
     path: /teams
     controller: App\Controller\TeamController::index
-    methods: GET
 
 coaches:
     path: /coaches

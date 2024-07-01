@@ -2,4 +2,64 @@
 
 {% block body %}
     <h1> Jugadores </h1>
+    <h2> Crea un jugador </h2>
+    <form id="create-player-form">
+        <label for="nombre">Nombre: </label>
+        <input type="text" id="nombre" name="nombre" maxlength="100" required><br><br>
+        <label for="salario"> Salario: </label>
+        <input type="number" id="salario" name="salario" min="0" required><br><br>
+        <label for="email">Email: </label>
+        <input type="email" id="email" name="email" required><br><br>
+        <label for="club_id"> ID del Club (Opcional):</label>
+        <input type="number" id="club_id" name="club_id" min="1"><br><br>
+        <button type="reset">Borrar</button>
+        <button type="submit">Crear jugador</button>
+    </form><br><br>
+
+    <h2> Elimina un jugador existente </h2>
+    <form id="delete-player-form">
+        <label for="delete-player-id">ID del jugador: </label>
+        <input type="number" id="delete-player-id" name="delete-player-id" min="1" required><br><br>
+        <button type="submit">Eliminar jugador</button>
+    </form><br><br>
+
+    <h2> Actualiza un jugador </h2>
+    <form id="update-player-form">
+        <label for="update-player-id">ID del jugador: </label>
+        <input type="number" id="update-player-id" name="update-player-id" min="1" required><br><br>
+        <label for="update-nombre"> Nuevo nombre: </label>
+        <input type="text" id="update-nombre" name="update-nombre" maxlength="100"><br><br>
+        <label for="update-salario">Nuevo salario: </label>
+        <input type="number" id="update-salario" name="update-salario" min="0"><br><br>
+        <button type="reset"> Borrar </button>
+        <button type="submit"> Actualizar jugador</button>
+    </form>
+
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $('#create-player-form').submit(function(event) {
+            event.preventDefault();
+
+            var formData = {
+                nombre: $('#nombre').val(),
+                salario: $('#salario').val(),
+                email: $('#email').val(),
+                club_id: $('#club_id').val()
+            };
+
+            $.ajax({
+                type: 'POST',
+                url: '/api/players',
+                contentType: 'application/json',
+                data: JSON.stringify(formData),
+                success: function (response) {
+                    console.log('Jugador creado', response);
+                },
+                error: function (response) {
+                    console.error('Error al crear un jugador.', response);
+                }
+            });
+        });
+    </script>
 {% endblock %}
