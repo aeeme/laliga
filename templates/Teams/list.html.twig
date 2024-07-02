@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>Listado de equipos</h1>
+<table>
+    <thead>
+    <tr>
+        <th>ID del club</th>
+        <th>Nombre</th>
+        <th>Presupuesto actual</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for team in equipos %}
+        <tr>
+            <td>{{ team.idTeams }}</td>
+            <td>{{ team.nombre }}</td>
+            <td>{{ team.presupuesto_actual }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

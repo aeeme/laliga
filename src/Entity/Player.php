@@ -4,39 +4,32 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="players")
- */
+
+#[ORM\Entity]
+#[ORM\Table(name: 'Players')]
 
 class Player
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+
+    #[ORM\Column(type: 'string', length: 100)]
     private $nombre;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+
+    #[ORM\Column(type: 'float')]
     private $salario;
 
-    /**
-     * @ORM\OneToOne(targetEntity="Team", inversedBy="players")
-     * @ORM\JoinColumn(name=club_id, referencedColumnName="id", onDelete="SET NULL")
-     */
+
+    #[ORM\OneToOne(targetEntity: 'Team', inversedBy: 'players')]
+    #[ORM\JoinColumn(name: 'club_id', referencedColumnName: 'id', nullable: 'SET NULL')]
     private $team;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+
+    #[ORM\Column(type: 'string', length: 100)]
     private $email;
 
     public function getId(): ?int{

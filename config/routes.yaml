@@ -6,6 +6,11 @@ teams:
     path: /teams
     controller: App\Controller\TeamController::index
 
+team_list:
+    path: /teams/list
+    controller: App\Controller\TeamController::list
+    methods: [GET]
+
 coaches:
     path: /coaches
     controller: App\Controller\CoachController::index

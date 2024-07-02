@@ -12,14 +12,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-/**
- * @Route("/api/coaches", name="api_coaches_")
- */
+
+#[Route("/api/coaches", name: "api_coaches")]
 class CoachController extends AbstractController
 {
-    /**
-     * @Route("/coach", name="coach_index")
-     */
+
+    #[Route("/coaches", name: "coaches_index")]
     public function index(): Response
     {
         return $this->render('Coaches/index.html.twig', [
@@ -32,9 +30,8 @@ class CoachController extends AbstractController
     {
         $this->notifier = $notifier;
     }
-    /**
-     * @Route("/", name="index", methods={"GET"})
-     */
+
+    #[Route("/coaches/list", name: "coaches_list", methods: ["GET"])]
     public function list(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $clubId = $request->query->get('club_id');
@@ -66,9 +63,8 @@ class CoachController extends AbstractController
         return $this->json($coaches);
     }
 
-    /**
-     * @Route("/", name="show", methods={"GET"})
-     */
+
+    #[Route("/coaches/{id}", name: "coaches_show", methods: ["GET"])]
     public function show(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $coach = $entityManager->getRepository(Coach::class)->find($id);
@@ -78,9 +74,7 @@ class CoachController extends AbstractController
         return $this->json($coach);
     }
 
-    /**
-     * @Route("/", name="create", methods={"POST"})
-     */
+    #[Route("/coaches/create", name: "coaches_create", methods: ["GET", "POST"])]
     public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -114,9 +108,8 @@ class CoachController extends AbstractController
         return $this->json($coach, 201);
     }
 
-    /**
-     * @Route("/{id}/assign-to-club", name="assign_to_club", methods={"POST"})
-     */
+
+    #[Route("/coaches/{id}/assign_club", name: "coaches_assign", methods: ["PUT"])]
     public function assignToClub(Coach $coach, Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -149,9 +142,8 @@ class CoachController extends AbstractController
         return $this->json($coach, 200);
     }
 
-    /**
-     * @Route("/{id}/remove-from-club", name="remove_from_club", methods={"POST"})
-     */
+
+    #[Route("/coaches/{id}/remove_club", name: "coaches_remove", methods: ["PUT"])]
     public function removeFromClub(Coach $coach, EntityManagerInterface $entityManager): JsonResponse
     {
         $club = $coach->getTeam();
@@ -171,9 +163,8 @@ class CoachController extends AbstractController
         return $this->json(['message' => 'Coach removed from club successfully'], 200);
     }
 
-    /**
-     * @Route("/{id}", name="update", methods={"PUT"})
-     */
+
+    #[Route("/coaches/{id}/update", name: "coaches_update", methods: ["PUT"])]
     public function update(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $coach = $entityManager->getRepository(Coach::class)->find($id);
@@ -191,9 +182,7 @@ class CoachController extends AbstractController
         return $this->json($coach);
     }
 
-    /**
-     * @Route("/{id}", name="delete", methods={"DELETE"})
-     */
+    #[Route("/coaches/{id}/delete", name: "coaches_delete", methods: ["DELETE"])]
     public function delete(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $coach = $entityManager->getRepository(Coach::class)->find($id);

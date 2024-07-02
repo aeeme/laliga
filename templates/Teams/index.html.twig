@@ -2,6 +2,7 @@
 
 {% block body %}
     <h1> Equipos </h1>
+    <h2><a href="/teams/list">Aquí podrás ver los equipos existentes:</a> </h2>
     <h2> Crea tu equipo </h2>
     <form id="create-team-form">
         <label for="nombre">Nombre: </label>
@@ -30,33 +31,5 @@
         <button type="reset">Borrar</button>
         <button type="submit">Actualizar equipo</button>
     </form>
-
-    <script>
-        document.getElementById('create-team-form').addEventListener('submit', function(event){
-            event.preventDefault();
-
-            const data = {
-                nombre: document.getElementById('nombre').value,
-                presupuesto_actual: document.getElementById('presupuesto_actual').value
-            };
-
-            fetch('/teams', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data)
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-                alert('Team created successfully!');
-            })
-            .catch((error) => {
-                console.error('Error', error);
-                alert('Error creating team!');
-            });
-        });
-    </script>
 
 {% endblock %}

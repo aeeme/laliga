@@ -7,37 +7,27 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="teams")
- */
+
+#[ORM\Entity]
+#[ORM\Table(name: "Teams")]
+
 class Team
 {
-    /**
-     * @ORM\Id
-     * @ORM\GeneratedValue
-     * @ORM\Column(type="integer")
-     */
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private $nombre;
 
-    /**
-     * @ORM\Column(type="float")
-     */
+    #[ORM\Column(type: 'float')]
     private $presupuesto_actual;
 
-    /**
-     * @ORM\OneToMany(targetEntity="App\Entity\Players", mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: Player::class, mappedBy: 'team')]
     private $players;
 
-    /**
-     * @ORM\OneToOne(targetEntity="App\Entity\Coach", mappedBy="team")
-     */
+    #[ORM\OneToOne(targetEntity: Coach::class, mappedBy: 'team')]
     private $coach;
 
     public function __construct()
