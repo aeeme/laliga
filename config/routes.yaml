@@ -11,10 +11,104 @@ team_list:
     controller: App\Controller\TeamController::list
     methods: [GET]
 
+team_show:
+    path: /teams/{id}
+    controller: App\Controller\TeamController::show
+    methods: [GET]
+
+teams_redirect:
+    path: /teams/redirect
+    controller: App\Controller\TeamController::redirectTo
+
+teams_create:
+    path: /teams/create
+    controller: App\Controller\TeamController::create
+    methods: [POST]
+
+teams_update:
+    path: /teams/{id}/update
+    controller: App\Controller\TeamController::update
+    methods: [PUT]
+
+teams_delete:
+    path: /teams/{id}/delete
+    controller: App\Controller\TeamController::delete
+    methods: [DELETE]
+
 coaches:
     path: /coaches
     controller: App\Controller\CoachController::index
 
+coaches_list:
+    path: /coaches/list
+    controller: App\Controller\CoachController::list
+    methods: [GET]
+
+coaches_show:
+    path: /coaches/{id}
+    controller: App\Controller\CoachController::show
+    methods: [GET]
+
+coaches_create:
+    path: /coaches/create
+    controller: App\Controller\CoachController::create
+    methods: [POST]
+
+coaches_assign:
+    path: /coaches/{id}/assign-club
+    controller: App\Controller\CoachController::assignToClub
+    methods: [PUT]
+
+coaches_remove:
+    path: /coaches/{id}/remove-club
+    controller: App\Controller\CoachController::removeFromClub
+    methods: [PUT]
+
+coaches_update:
+    path: /coaches/{id}/update
+    controller: App\Controller\CoachController::update
+    methods: [PUT]
+
+coaches_delete:
+    path: /coaches/{id}/delete
+    controller: App\Controller\CoachController::delete
+    methods: [DELETE]
+
 players:
     path: /players
     controller: App\Controller\PlayerController::index
+
+players_list:
+    path: /players/list
+    controller: App\Controller\PlayerController::list
+    methods: [GET]
+
+players_show:
+    path: /players/{id}
+    controller: App\Controller\PlayerController::show
+    methods: [GET]
+
+players_create:
+    path: /players/create
+    controller: App\Controller\PlayerController::create
+    methods: [POST]
+
+players_assign:
+    path: /players/{id}/assign-club
+    controller: App\Controller\PlayerController::assignToClub
+    methods: [PUT]
+
+players_remove:
+    path: /players/{id}/remove-club
+    controller: App\Controller\PlayerController::removeFromClub
+    methods: [PUT]
+
+players_update:
+    path: /players/{id}/update
+    controller: App\Controller\PlayerController::update
+    methods: [PUT]
+
+players_delete:
+    path: /players/{id}/delete
+    controller: App\Controller\PlayerController::delete
+    methods: [DELETE]

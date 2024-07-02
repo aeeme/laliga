@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1> Equipos </h1>
+{% for data in team%}
+
+    <h3>Nombre: {{ data.nombre }}</h3>
+    <h3>Presupuesto actual: {{ data.presupuesto_actual }}</h3>
+    <h3>ID del club: {{ data.idTeams }}</h3>
+
+{% endfor %}
+{% endblock %}

@@ -33,15 +33,23 @@ class TeamController extends AbstractController
 
 
     #[Route("/teams/{id}", name: "teams_show", methods: ["GET"])]
-    public function show(EntityManagerInterface $entityManager, int $id): JsonResponse
+    public function show(EntityManagerInterface $entityManager, string $id): Response
     {
         $team = $entityManager->getRepository(Team::class)->find($id);
         if (!$team) {
             return $this->json(['message' => 'Team not found'], 404);
         }
-        return $this->json($team);
+        return $this->render('Teams/show.html.twig', [
+            'team' => $team,
+        ]);
     }
 
+    #[Route("/teams/redirect", name: "teams_redirect", methods: ["GET"])]
+    public function redirectTo(Request $request): Response
+    {
+        $team_id = (int) $request->query->get('team_id');
+        return $this->redirectToRoute('teams_show', ['id' => $team_id]);
+    }
 
     #[Route("/teams/create", name: "teams_create", methods: ["POST"])]
     public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse

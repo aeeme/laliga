@@ -2,7 +2,13 @@
 
 {% block body %}
     <h1> Equipos </h1>
-    <h2><a href="/teams/list">Aquí podrás ver los equipos existentes:</a> </h2>
+    <h2><a href="/teams/list">Aquí podrás ver los equipos existentes:</a> </h2><br>
+    <h2>Busca tu equipo </h2><br><br>
+    <form method="get" action="{{ path('teams_redirect') }}">
+        <label for="team_id">ID de tu equipo:</label>
+        <input type="number" id="team_id" name="team_id" min="1">
+        <button type="submit">Buscar</button>
+    </form>
     <h2> Crea tu equipo </h2>
     <form id="create-team-form">
         <label for="nombre">Nombre: </label>

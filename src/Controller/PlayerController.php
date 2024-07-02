@@ -31,7 +31,7 @@ class PlayerController extends AbstractController
     }
 
     #[Route("/players/list", name: 'players_list', methods: ['GET'])]
-    public function list(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function list(Request $request, EntityManagerInterface $entityManager): Response
     {
         $clubId = $request->query->get('clubId');
         $filter = $request->query->get('filter');
@@ -59,7 +59,9 @@ class PlayerController extends AbstractController
 
         $players = $qb->getQuery()->getResult();
 
-        return $this->json($players);
+        return $this->render('Players/list.html.twig', [
+            'players' => $players,
+        ]);
     }
 
 
@@ -104,7 +106,7 @@ class PlayerController extends AbstractController
     }
 
 
-    #[Route("/players/{id}/assign_club", name: 'players_assign', methods: ['PUT'])]
+    #[Route("/players/{id}/assign-club", name: 'players_assign', methods: ['PUT'])]
     public function assignToClub(Player $player, Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -134,7 +136,7 @@ class PlayerController extends AbstractController
     }
 
 
-    #[Route("/players/{id}/remove_club", name: 'players_remove', methods: ['PUT'])]
+    #[Route("/players/{id}/remove-club", name: 'players_remove', methods: ['PUT'])]
     public function removeFromClub(Player $player, EntityManagerInterface $entityManager): JsonResponse
     {
         $club = $player->getTeam();

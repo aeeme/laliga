@@ -32,7 +32,7 @@ class CoachController extends AbstractController
     }
 
     #[Route("/coaches/list", name: "coaches_list", methods: ["GET"])]
-    public function list(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    public function list(Request $request, EntityManagerInterface $entityManager): Response
     {
         $clubId = $request->query->get('club_id');
         $filter = $request->query->get('filter');
@@ -60,7 +60,9 @@ class CoachController extends AbstractController
 
         $coaches = $qb->getQuery()->getResult();
 
-        return $this->json($coaches);
+        return $this->render('Coaches/list.html.twig', [
+            'coaches' => $coaches,
+        ]);
     }
 
 
@@ -109,7 +111,7 @@ class CoachController extends AbstractController
     }
 
 
-    #[Route("/coaches/{id}/assign_club", name: "coaches_assign", methods: ["PUT"])]
+    #[Route("/coaches/{id}/assign-club", name: "coaches_assign", methods: ["PUT"])]
     public function assignToClub(Coach $coach, Request $request, EntityManagerInterface $entityManager): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -143,7 +145,7 @@ class CoachController extends AbstractController
     }
 
 
-    #[Route("/coaches/{id}/remove_club", name: "coaches_remove", methods: ["PUT"])]
+    #[Route("/coaches/{id}/remove-club", name: "coaches_remove", methods: ["PUT"])]
     public function removeFromClub(Coach $coach, EntityManagerInterface $entityManager): JsonResponse
     {
         $club = $coach->getTeam();
