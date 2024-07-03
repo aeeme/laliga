@@ -27,32 +27,28 @@ class TeamController extends AbstractController
     {
         $teams = $entityManager->getRepository(Team::class)->findAll();
         return $this->render('Teams/list.html.twig', [
-            'equipos' => $teams,
+            'teams' => $teams,
         ]);
     }
 
 
-    #[Route("/teams/{id}", name: "teams_show", methods: ["GET"])]
-    public function show(EntityManagerInterface $entityManager, string $id): Response
+    #[Route("/teams/{id}", name: "team_show", methods: ["GET"])]
+    public function show(EntityManagerInterface $entityManager, Team $team): Response
     {
-        $team = $entityManager->getRepository(Team::class)->find($id);
-        if (!$team) {
-            return $this->json(['message' => 'Team not found'], 404);
-        }
         return $this->render('Teams/show.html.twig', [
-            'team' => $team,
+        'equipo' => $team,
         ]);
     }
 
-    #[Route("/teams/redirect", name: "teams_redirect", methods: ["GET"])]
+    #[Route("/teams/redirect", name: "team_redirect", methods: ["POST"])]
     public function redirectTo(Request $request): Response
     {
-        $team_id = (int) $request->query->get('team_id');
-        return $this->redirectToRoute('teams_show', ['id' => $team_id]);
+        $team_id = (int) $request->request->get('team_id');
+        return $this->redirectToRoute('team_show', ['id' => $team_id]);
     }
 
-    #[Route("/teams/create", name: "teams_create", methods: ["POST"])]
-    public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    #[Route("/teams", name: "team_create", methods: ["POST"])]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -62,12 +58,11 @@ class TeamController extends AbstractController
 
         $entityManager->persist($team);
         $entityManager->flush();
-
-        return $this->json($team, 201);
+        return $this->render('Teams/list.html.twig');
     }
 
 
-    #[Route("/teams/{id}/update", name: "teams_update", methods: ["PUT"])]
+    #[Route("/teams/{id}/update", name: "team_update", methods: ["PUT"])]
     public function update(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $team = $entityManager->getRepository(Team::class)->find($id);
@@ -86,8 +81,8 @@ class TeamController extends AbstractController
     }
 
 
-    #[Route("/teams/{id}/delete", name: "teams_delete", methods: ["DELETE"])]
-    public function delete(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+    #[Route("/teams/{id}/delete", name: "team_delete", methods: ["DELETE"])]
+    public function delete(EntityManagerInterface $entityManager, int $id): JsonResponse
     {
         $team = $entityManager->getRepository(Team::class)->find($id);
         if (!$team) {

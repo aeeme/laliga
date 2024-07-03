@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 {% block body %}
     <h1>Entrenadores</h1>
-    <table>
+    <table style="border: 2px solid black">
         <thead>
         <tr>
-            <th>ID del entrenador</th>
-            <th>Nombre</th>
-            <th>Salario</th>
+            <th style="border: 2px solid black">ID del entrenador</th>
+            <th style="border: 2px solid black">Nombre</th>
+            <th style="border: 2px solid black">Salario</th>
+            <th style="border: 2px solid black">Correo electrónico</th>
         </tr>
         </thead>
         <tbody>
-        {% for coach in coaches %}
+            {% for coach in coaches %}
             <tr>
-                <td>{{ coach.idCoaches }}</td>
-                <td>{{ coach.nombre }}</td>
-                <td>{{ coach.salario }}</td>
-                <td>{{ coach.email }}</td>
-                <td>{{ coach.club_id }}</td>
+                <td style="border: 2px solid black">{{ coach.id }}</td>
+                <td style="border: 2px solid black">{{ coach.nombre }}</td>
+                <td style="border: 2px solid black">{{ coach.salario }}</td>
+                <td style="border: 2px solid black">{{ coach.email }}</td>
             </tr>
-        {% endfor %}
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

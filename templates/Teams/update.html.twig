@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1> Equipos </h1>
+    <h2> Actualiza un equipo existente</h2>
+    <form id="update-team-form">
+        <label for="update-team-id">ID del equipo:</label>
+        <input type="number" id="update-team-id" name="update-team-id" min="1" required><br><br>
+        <label for="update-team-nombre">Nuevo nombre</label>
+        <input type="text" id="update-team-nombre" name="update-team-nombre" maxlength="100"><br><br>
+        <label for="update-team-presupuesto">Nuevo presupuesto:</label>
+        <input type="number" id="update-team-presupuesto" name="update-team-presupuesto" min="0"><br><br>
+        <button type="reset">Borrar</button>
+        <button type="submit">Actualizar equipo</button>
+    </form>
+{% endblock %}

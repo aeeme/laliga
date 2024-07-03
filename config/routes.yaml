@@ -16,21 +16,20 @@ team_show:
     controller: App\Controller\TeamController::show
     methods: [GET]
 
-teams_redirect:
+team_redirect:
     path: /teams/redirect
     controller: App\Controller\TeamController::redirectTo
 
-teams_create:
-    path: /teams/create
+team_create:
+    path: /teams
     controller: App\Controller\TeamController::create
-    methods: [POST]
 
-teams_update:
+team_update:
     path: /teams/{id}/update
     controller: App\Controller\TeamController::update
     methods: [PUT]
 
-teams_delete:
+team_delete:
     path: /teams/{id}/delete
     controller: App\Controller\TeamController::delete
     methods: [DELETE]
@@ -44,10 +43,14 @@ coaches_list:
     controller: App\Controller\CoachController::list
     methods: [GET]
 
-coaches_show:
+coach_show:
     path: /coaches/{id}
     controller: App\Controller\CoachController::show
     methods: [GET]
+
+coach_redirect:
+    path: /coaches/redirect
+    controller: App\Controller\CoachController::redirectTo
 
 coaches_create:
     path: /coaches/create
@@ -88,8 +91,12 @@ players_show:
     controller: App\Controller\PlayerController::show
     methods: [GET]
 
+players_redirect:
+    path: /players/redirect
+    controller: App\Controller\PlayerController::redirectTo
+
 players_create:
-    path: /players/create
+    path: /players
     controller: App\Controller\PlayerController::create
     methods: [POST]
 

@@ -1,37 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1> Entrenadores </h1>
+    <h1> Entrenadores </h1><br>
+    <h2>Ver entrenadores </h2>
+    <p>Además, podrás actualizar y eliminar entrenadores.</p>
+    <a href="/coaches/list"><button type="button">Buscar</button> </a> <br><br>
+    <h2>Busca un entrenador</h2>
+    <form method="post" action="{{ path('coach_redirect') }}">
+        <label for="coachID">ID de tu equipo:</label>
+        <input type="number" id="coachID" name="coachID" min="1" required>
+        <button type="submit">Buscar</button>
+    </form><br><br>
     <h2> Crea un entrenador </h2>
-    <form id="create-coach-form">
+    <form id="create-coach-form" action="{{ path('coaches_create') }}">
         <label for="nombre">Nombre: </label>
-        <input type="text" id="nombre" name="nombre" maxlength="45" required><br><br>
+        <input type="text" id="nombre" name="nombre" maxlength="45" required> <br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required> <br> <br>
         <label for="salario">Salario: </label>
         <input type="number" id="salario" name="salario" min="0" required><br><br>
-        <label for="email"> Email: </label>
-        <input type="email" id="email" name="email" required><br><br>
-        <label for="club_id">ID del Club:</label>
-        <input type="number" id="club_id" name="club_id" min="1"><br><br>
+        <label for="club_id">ID del club (Opcional):</label>
+        <input type="number" id="club_id" name="club_id" min="1"> <br> <br>
         <button type="reset">Borrar</button>
         <button type="submit">Crear entrenador</button>
     </form><br><br>
 
-    <h2> Elimina un entrenador </h2>
-    <form id="delete-coach-form">
-        <label for="delete-coach-id">ID del entrenador:</label>
-        <input type="number" id="delete-coach-id" name="delete-coach-id" min="1" required><br><br>
-        <button type="submit">Eliminar entrenador</button>
-    </form><br><br>
-
-    <h2> Actualiza un entrenador </h2>
-    <form id="update-coach-form">
-        <label for="update-coach-id"> ID del entrenador: </label>
-        <input type="number" id="update-coach-id" name="update-coach-id" min="1" required><br><br>
-        <label for="update-nombre"> Nuevo nombre:</label>
-        <input type="text" id="update-nombre" name="update-nombre" maxlength="45"><br><br>
-        <label for="update-salario">Nuevo salario: </label>
-        <input type="number" id="update-salario" name="update-salario" min="0"><br><br>
-        <button type="reset">Borrar</button>
-        <button type="submit">Actualizar entrenador</button>
-    </form>
 {% endblock %}

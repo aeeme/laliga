@@ -30,10 +30,10 @@ class Team
     #[ORM\OneToOne(targetEntity: Coach::class, mappedBy: 'team')]
     private $coach;
 
-    public function __construct()
-    {
-        $this->players = new ArrayCollection();
-    }
+//    public function __construct()
+//    {
+//        $this->players = new ArrayCollection();
+//    }
 
     public function getPlayers()
     {

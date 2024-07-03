@@ -1,41 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1> Equipos </h1>
-    <h2><a href="/teams/list">Aquí podrás ver los equipos existentes:</a> </h2><br>
-    <h2>Busca tu equipo </h2><br><br>
-    <form method="get" action="{{ path('teams_redirect') }}">
+    <h1> Equipos </h1><br>
+    <h2>Ver equipos </h2>
+    <p>Además, podrás actualizar y eliminar los equipos.</p>
+    <a href="/teams/list"><button type="button">Buscar</button> </a> <br><br>
+{#    <h2> Crea tu equipo </h2>#}
+{#    <form method="get" action="{{ path('teams_create') }}">#}
+{#        <button type="submit">Crear</button>#}
+{#    </form><br>#}
+    <h2>Busca tu equipo</h2>
+    <form method="post" action="{{ path('team_redirect') }}">
         <label for="team_id">ID de tu equipo:</label>
-        <input type="number" id="team_id" name="team_id" min="1">
+        <input type="number" id="team_id" name="team_id" min="1" required>
         <button type="submit">Buscar</button>
-    </form>
+    </form><br><br>
     <h2> Crea tu equipo </h2>
-    <form id="create-team-form">
+    <form id="create-team-form" action="{{ path('team_create') }}">
         <label for="nombre">Nombre: </label>
         <input type="text" id="nombre" name="nombre" maxlength="100" required> <br><br>
-        <label for="presupuesto_actual">Presupuesto: </label>
-        <input type="number" id="presupuesto_actual" name="presupuesto_actual" min="0" required><br><br>
+        <label for="presupuestoActual">Presupuesto: </label>
+        <input type="number" id="presupuestoActual" name="presupuestoActual" min="0" required><br><br>
         <button type="reset">Borrar</button>
         <button type="submit">Crear equipo</button>
     </form><br><br>
-
-    <h2> Elimina un equipo existente </h2>
-    <form id="delete-team-form">
-        <label for="delete-team-id">ID del equipo:</label>
-        <input type="number" id="delete-team-id" name="delete-team-id" min="1" required><br><br>
-        <button type="submit">Eliminar equipo</button>
-    </form><br><br>
-
-    <h2> Actualiza un equipo existente</h2>
-    <form id="update-team-form">
-        <label for="update-team-id">ID del equipo:</label>
-        <input type="number" id="update-team-id" name="update-team-id" min="1" required><br><br>
-        <label for="update-team-nombre">Nuevo nombre</label>
-        <input type="text" id="update-team-nombre" name="update-team-nombre" maxlength="100"><br><br>
-        <label for="update-team-presupuesto">Nuevo presupuesto:</label>
-        <input type="number" id="update-team-presupuesto" name="update-team-presupuesto" min="0"><br><br>
-        <button type="reset">Borrar</button>
-        <button type="submit">Actualizar equipo</button>
-    </form>
 
 {% endblock %}

@@ -66,24 +66,41 @@ class PlayerController extends AbstractController
 
 
     #[Route("/players/{id}", name: 'players_show', methods: ['GET'])]
-    public function show(EntityManagerInterface $entityManager, int $id): JsonResponse
+    public function show(EntityManagerInterface $entityManager, int $id): Response
     {
         $players = $entityManager->getRepository(Player::class)->find($id);
-        return $this->json($players);
+        if (!$players) {
+            return $this->json(['message' => 'Player not found'], 404);
+        }
+        return $this->render('Players/show.html.twig', [
+            'players' => $players,
+        ]);
+    }
+
+    #[Route("(/players/redirect", name: 'players_redirect')]
+    public function redirectTo(Request $request): Response
+    {
+        $playerID = (int) $request->request->get('playerID');
+        return $this->redirectToRoute('players_show', ['id' => $playerID]);
     }
 
 
-    #[Route("/players/create", name: 'players_create', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    #[Route("/players", name: 'players_create', methods: ['POST'])]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent(), true);
 
-        $player = new Player();
-        $player->setName($data['nombre']);
-        $player->setEmail($data['email']);
+        $nombre = $data['nombre'];
+        $salario = $data['salario'];
+        $email = $data['email'];
+        $clubId = $data['club_id'];
 
-        if (isset($data['club_id'])){
-            $club = $entityManager->getRepository(Team::class)->find($data['club_id']);
+        $player = new Player();
+        $player->setName($nombre);
+        $player->setEmail($email);
+
+        if (isset($clubId)){
+            $club = $entityManager->getRepository(Team::class)->find($clubId);
             if(!$club) {
                 return $this->json(['message' => 'Club not found'], 404);
             }
@@ -97,12 +114,12 @@ class PlayerController extends AbstractController
 
             $this->notifier->notify('You have been assigned to a new club.', $player->getEmail());
         }
-        $player->setSalario($data['salario']);
+        $player->setSalario($salario);
 
         $entityManager->persist($player);
         $entityManager->flush();
 
-        return $this->json($player, 201);
+        return $this->redirectToRoute('players_list');
     }
 
 

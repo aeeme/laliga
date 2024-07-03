@@ -66,14 +66,19 @@ class CoachController extends AbstractController
     }
 
 
-    #[Route("/coaches/{id}", name: "coaches_show", methods: ["GET"])]
-    public function show(EntityManagerInterface $entityManager, int $id): JsonResponse
+    #[Route("/coaches/{id}", name: "coach_show", methods: ["GET"])]
+    public function show(EntityManagerInterface $entityManager, Coach $coach): Response
     {
-        $coach = $entityManager->getRepository(Coach::class)->find($id);
-        if (!$coach) {
-            return $this->json(['message' => 'Coach not found'], 404);
-        }
-        return $this->json($coach);
+        return $this->render('Coaches/show.html.twig', [
+            'coach' => $coach,
+        ]);
+    }
+
+    #[Route("(/coaches/redirect", name: 'coach_redirect')]
+    public function redirectTo(Request $request): Response
+    {
+        $coachID = $request->query->get('coachId');
+        return $this->redirectToRoute('coach_show', ['id' => $coachID]);
     }
 
     #[Route("/coaches/create", name: "coaches_create", methods: ["GET", "POST"])]

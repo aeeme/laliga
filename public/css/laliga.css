@@ -46,3 +46,60 @@ body {
 .card h3 {
     color: #004d00;
 }
+/* Estilo general de la tabla */
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 16px;
+    text-align: left;
+    color: #333;
+}
+
+/* Estilo para la cabecera de la tabla */
+.table th, .table td {
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+}
+
+/* Estilo para la fila de cabecera */
+.table th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+}
+
+/* Colores alternativos para las filas */
+.table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.table tr:nth-child(odd) {
+    background-color: #fff;
+}
+
+/* Estilo para filas al pasar el ratón */
+.table tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Estilo para el contenido de las celdas */
+.table td {
+    vertical-align: middle;
+}
+
+/* Estilo para celdas de encabezado */
+.table th:first-child {
+    border-top-left-radius: 6px;
+}
+
+.table th:last-child {
+    border-top-right-radius: 6px;
+}
+
+.table td:first-child {
+    border-bottom-left-radius: 6px;
+}
+
+.table td:last-child {
+    border-bottom-right-radius: 6px;
+}

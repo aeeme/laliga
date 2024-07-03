@@ -5,17 +5,29 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5aa2c268-ef3b-439d-9278-52ef11e7c412" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/templates/Coaches/list.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Players/list.html.twig" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/templates/Teams/show.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Players/show.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Teams/create.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Teams/delete.html.twig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/templates/Teams/update.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config/routes.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/config/routes.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20240628074700.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/migrations/Version20240702100850.php" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/laliga.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/laliga.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/CoachController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/CoachController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/PlayerController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/PlayerController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Controller/TeamController.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Controller/TeamController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Coach.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Coach.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Player.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Player.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Entity/Team.php" beforeDir="false" afterPath="$PROJECT_DIR$/src/Entity/Team.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Coaches/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Coaches/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Coaches/list.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Coaches/list.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Players/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Players/index.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Players/list.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Players/list.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Teams/index.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Teams/index.html.twig" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/Teams/list.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Teams/list.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/Teams/show.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/Teams/show.html.twig" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/templates/base.html.twig" beforeDir="false" afterPath="$PROJECT_DIR$/templates/base.html.twig" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -185,11 +197,18 @@
       <workItem from="1719570233927" duration="8295000" />
       <workItem from="1719813745468" duration="15080000" />
       <workItem from="1719831445934" duration="8428000" />
-      <workItem from="1719901081500" duration="24726000" />
+      <workItem from="1719901081500" duration="24782000" />
+      <workItem from="1719986778343" duration="15327000" />
+      <workItem from="1720003843321" duration="7386000" />
+      <workItem from="1720012986130" duration="2003000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>

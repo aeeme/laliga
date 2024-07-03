@@ -3,14 +3,15 @@
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}LaLiga{% endblock %}</title>
-        <link rel="stylesheet" href="{{ asset('css/laliga.css') }}">
+
         {% block stylesheets %}
+        <link rel="stylesheet" href="{{ asset('css/laliga.css') }}">
         {% endblock %}
 
         {% block javascripts %}
         {% endblock %}
     </head>
-    <body>
+    <body style="background-color: dimgray">
         {% block body %}{% endblock %}
     </body>
 </html>

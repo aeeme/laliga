@@ -1,6 +1,24 @@
 {% extends 'base.html.twig' %}
 {% block body %}
-
-<h1>Jugadores</h1>
-
+    <h1>Listado de jugadores</h1>
+    <table style="border: 2px solid black">
+        <thead>
+        <tr>
+            <th style="border: 2px solid black">ID del jugador</th>
+            <th style="border: 2px solid black">Nombre</th>
+            <th style="border: 2px solid black">Correo electrónico</th>
+            <th style="border: 2px solid black">Salario</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for player in players %}
+            <tr>
+                <td style="border: 2px solid black">{{ player.id }}</td>
+                <td style="border: 2px solid black">{{ player.name }}</td>
+                <td style="border: 2px solid black">{{ player.email }}</td>
+                <td style="border: 2px solid black">{{ player.salario }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}

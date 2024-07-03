@@ -23,7 +23,7 @@ class Coach
     private $salario;
 
 
-    #[ORM\OneToOne(targetEntity: 'Team', inversedBy: 'coaches')]
+    #[ORM\OneToOne(targetEntity: Team::class, inversedBy: 'coach')]
     #[ORM\JoinColumn(name: 'club_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $team;
 
