@@ -66,6 +66,17 @@ class Team
             $coach->setTeam($this);
         }
     }
+
+    public function removeCoach(Coach $coach): self
+    {
+        if ($this->coach->removeElement($coach)) {
+            if ($coach->getTeam() === $this) {
+                $coach->setTeam(null);
+            }
+        }
+        return $this;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -89,16 +100,6 @@ class Team
     public function setPresupuestoActual(float $presupuesto_actual): self
     {
         $this->presupuesto_actual = $presupuesto_actual;
-        return $this;
-    }
-
-    public function removeCoach(Coach $coach): self
-    {
-        if ($this->coach->removeElement($coach)) {
-            if ($coach->getTeam() === $this) {
-                $coach->setTeam(null);
-            }
-        }
         return $this;
     }
 }

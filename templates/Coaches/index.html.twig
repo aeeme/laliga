@@ -16,7 +16,7 @@
 
 
     <h2> Crea un entrenador </h2>
-    <form id="create-coach-form" action="{{ path('coach_create') }}">
+    <form id="create-coach-form" action="{{ path('coach_create') }}" method="post">
         <label for="nombre">Nombre: </label>
         <input type="text" id="nombre" name="nombre" maxlength="45" required> <br><br>
         <label for="email">Email:</label>
@@ -29,4 +29,5 @@
         <button type="submit">Crear entrenador</button>
     </form><br><br>
 
+    <a href="/"><h3>Inicio</h3></a
 {% endblock %}

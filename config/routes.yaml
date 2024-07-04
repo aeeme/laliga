@@ -54,29 +54,29 @@ coach_redirect:
     controller: App\Controller\CoachController::redirectTo
 
 coach_create:
-    path: /coaches
+    path: /coaches/create
     controller: App\Controller\CoachController::create
     methods: [POST]
 
-coaches_assign:
+coach_assign:
     path: /coaches/{id}/assign-club
     controller: App\Controller\CoachController::assignToClub
-    methods: [PUT]
+    methods: [POST] [PUT]
 
-coaches_remove:
+coach_remove:
     path: /coaches/{id}/remove-club
     controller: App\Controller\CoachController::removeFromClub
-    methods: [PUT]
+    methods: [POST] [PUT]
 
-coaches_update:
+coach_update:
     path: /coaches/{id}/update
     controller: App\Controller\CoachController::update
-    methods: [PUT]
+    methods: [POST]
 
-coaches_delete:
+coach_delete:
     path: /coaches/{id}/delete
     controller: App\Controller\CoachController::delete
-    methods: [DELETE]
+    methods: [POST] [DELETE]
 
 players:
     path: /players
