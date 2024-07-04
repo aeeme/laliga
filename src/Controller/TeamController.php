@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +37,7 @@ class TeamController extends AbstractController
     public function show(EntityManagerInterface $entityManager, Team $team): Response
     {
         return $this->render('Teams/show.html.twig', [
-        'equipo' => $team,
+        'team' => $team,
         ]);
     }
 
@@ -47,42 +48,52 @@ class TeamController extends AbstractController
         return $this->redirectToRoute('team_show', ['id' => $team_id]);
     }
 
-    #[Route("/teams", name: "team_create", methods: ["POST"])]
+    #[Route("/teams/create", name: "team_create", methods: ["POST"])]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $data = json_decode($request->getContent(), true);
+        $nombre = $request->request->get('nombre');
+        $presupuesto = $request->request->get('presupuestoActual');
 
         $team = new Team();
-        $team->setNombre($data['nombre']);
-        $team->setPresupuestoActual($data['presupuestoActual']);
+        $team->setNombre($nombre);
+        $team->setPresupuestoActual($presupuesto);
 
         $entityManager->persist($team);
         $entityManager->flush();
-        return $this->render('Teams/list.html.twig');
+
+        return $this->render('Teams/create.html.twig', [
+            'team' => $team,
+        ]);
     }
 
 
-    #[Route("/teams/{id}/update", name: "team_update", methods: ["PUT"])]
-    public function update(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+    #[Route("/teams/{id}/update", name: "team_update", methods: ["PUT", "POST"])]
+    public function update(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $team = $entityManager->getRepository(Team::class)->find($id);
         if (!$team) {
             return $this->json(['message' => 'Team not found'], 404);
         }
 
-        $data = json_decode($request->getContent(), true);
+        $newNombre = $request->request->get('update-team-nombre');
+        if (isset($newNombre)) {
+            $newNombre = $team->getNombre();
+        }
+        $newPresupuesto = (float) $request->request->get('update-team-presupuesto');
 
-        $team->setNombre($data['nombre']);
-        $team->setPresupuestoActual($data['presupuestoActual']);
+        $team->setNombre($newNombre);
+        $team->setPresupuestoActual($newPresupuesto);
 
         $entityManager->flush();
 
-        return $this->json($team);
+        return $this->render('Teams/update.html.twig', [
+            'team' => $team,
+        ]);
     }
 
 
-    #[Route("/teams/{id}/delete", name: "team_delete", methods: ["DELETE"])]
-    public function delete(EntityManagerInterface $entityManager, int $id): JsonResponse
+    #[Route("/teams/{id}/delete", name: "team_delete", methods: ["DELETE", "POST"])]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
     {
         $team = $entityManager->getRepository(Team::class)->find($id);
         if (!$team) {
@@ -90,6 +101,8 @@ class TeamController extends AbstractController
         }
         $entityManager->remove($team);
         $entityManager->flush();
-        return $this->json(['message' => 'Team successfully deleted']);
+        return $this->render('Teams/delete.html.twig', [
+            'team' => $team,
+        ]);
     }
 }

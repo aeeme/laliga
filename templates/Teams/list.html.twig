@@ -7,6 +7,8 @@
         <th style="border: 2px solid black">ID del club</th>
         <th style="border: 2px solid black">Nombre</th>
         <th style="border: 2px solid black">Presupuesto actual</th>
+        <th style="border: 2px solid black">Actualizar</th>
+        <th style="border: 2px solid black">Eliminar</th>
     </tr>
     </thead>
     <tbody>
@@ -15,6 +17,13 @@
             <td style="border: 2px solid black">{{ team.id }}</td>
             <td style="border: 2px solid black">{{ team.nombre }}</td>
             <td style="border: 2px solid black">{{ team.presupuestoActual }}</td>
+            <td style="border: 2px solid black"><a href="/teams/{{ team.id }}"><button>Actualizar</button></a></td>
+            <td style="border: 2px solid black">
+                <form id="delete-team" action="{{ path('team_delete', {'id' : team.id}) }}" method="post" onsubmit="return confirm('Estás seguro de que quieres eliminar el equipo {{ team.nombre }}?');">
+                    <input type="hidden" name="_method" value="DELETE">
+                    <button type="submit">Eliminar</button>
+                </form>
+            </td>
         </tr>
     {% endfor %}
     </tbody>

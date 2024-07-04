@@ -5,22 +5,22 @@
     <h2>Ver equipos </h2>
     <p>Además, podrás actualizar y eliminar los equipos.</p>
     <a href="/teams/list"><button type="button">Buscar</button> </a> <br><br>
-{#    <h2> Crea tu equipo </h2>#}
-{#    <form method="get" action="{{ path('teams_create') }}">#}
-{#        <button type="submit">Crear</button>#}
-{#    </form><br>#}
+
+
     <h2>Busca tu equipo</h2>
     <form method="post" action="{{ path('team_redirect') }}">
         <label for="team_id">ID de tu equipo:</label>
         <input type="number" id="team_id" name="team_id" min="1" required>
         <button type="submit">Buscar</button>
     </form><br><br>
+
+
     <h2> Crea tu equipo </h2>
-    <form id="create-team-form" action="{{ path('team_create') }}">
+    <form id="create-team-form" action="{{ path('team_create') }}" method="post">
         <label for="nombre">Nombre: </label>
         <input type="text" id="nombre" name="nombre" maxlength="100" required> <br><br>
         <label for="presupuestoActual">Presupuesto: </label>
-        <input type="number" id="presupuestoActual" name="presupuestoActual" min="0" required><br><br>
+        <input type="number" id="presupuestoActual" name="presupuestoActual" min="50" required><br><br>
         <button type="reset">Borrar</button>
         <button type="submit">Crear equipo</button>
     </form><br><br>

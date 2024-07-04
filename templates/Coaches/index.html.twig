@@ -5,14 +5,18 @@
     <h2>Ver entrenadores </h2>
     <p>Además, podrás actualizar y eliminar entrenadores.</p>
     <a href="/coaches/list"><button type="button">Buscar</button> </a> <br><br>
+
+
     <h2>Busca un entrenador</h2>
     <form method="post" action="{{ path('coach_redirect') }}">
-        <label for="coachID">ID de tu equipo:</label>
+        <label for="coachID">ID de un entrenador:</label>
         <input type="number" id="coachID" name="coachID" min="1" required>
         <button type="submit">Buscar</button>
     </form><br><br>
+
+
     <h2> Crea un entrenador </h2>
-    <form id="create-coach-form" action="{{ path('coaches_create') }}">
+    <form id="create-coach-form" action="{{ path('coach_create') }}">
         <label for="nombre">Nombre: </label>
         <input type="text" id="nombre" name="nombre" maxlength="45" required> <br><br>
         <label for="email">Email:</label>

@@ -2,14 +2,10 @@
 {% block body %}
 
     <h1>Equipos</h1>
-    <h2> Crea tu equipo </h2>
-    <form id="create-team-form">
-        <label for="nombre">Nombre: </label>
-        <input type="text" id="nombre" name="nombre" maxlength="100" required> <br><br>
-        <label for="presupuestoActual">Presupuesto: </label>
-        <input type="number" id="presupuestoActual" name="presupuestoActual" min="0" required><br><br>
-        <button type="reset">Borrar</button>
-        <button type="submit">Crear equipo</button>
-    </form><br><br>
+    <h2> Nuevo equipo correctamente creado </h2>
+    <b><p> Nombre: </p></b>
+    <p>{{ team.nombre }}</p> <br>
+    <b><p> Presupuesto actual: </p></b>
+    <p>{{ team.presupuestoActual }}</p>
 
 {% endblock %}

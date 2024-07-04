@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+<h1>Entrenadores</h1>
+<table style="border: 2px solid black">
+    <thead>
+    <tr>
+        <th style="border: 2px solid black">ID del entrenador</th>
+        <th style="border: 2px solid black">Nombre</th>
+        <th style="border: 2px solid black">Email</th>
+        <th style="border: 2px solid black">Salario</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td style="border: 2px solid black">{{ coach.id }}</td>
+        <td style="border: 2px solid black">{{ coach.nombre }}</td>
+        <td style="border: 2px solid black">{{ coach.email }}</td>
+        <td style="border: 2px solid black">{{ coach.salario }}</td>
+    </tr>
+    </tbody>
+</table>
+{% endblock %}

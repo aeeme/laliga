@@ -11,14 +11,12 @@
         </tr>
         </thead>
         <tbody>
-        {% for player in players %}
         <tr>
             <td style="border: 2px solid black"> {{ player.id}} </td>
-            <td style="border: 2px solid black"> {{ player.nombre }} </td>
+            <td style="border: 2px solid black"> {{ player.name }} </td>
             <td style="border: 2px solid black"> {{ player.email }} </td>
             <td style="border: 2px solid black"> {{ player.salario }} </td>
         </tr>
-        {% endfor %}
         </tbody>
     </table>
 {% endblock %}

@@ -65,23 +65,19 @@ class PlayerController extends AbstractController
     }
 
 
-    #[Route("/players/{id}", name: 'players_show', methods: ['GET'])]
-    public function show(EntityManagerInterface $entityManager, int $id): Response
+    #[Route("/players/{id}", name: 'player_show', methods: ['GET'])]
+    public function show(EntityManagerInterface $entityManager, Player $player): Response
     {
-        $players = $entityManager->getRepository(Player::class)->find($id);
-        if (!$players) {
-            return $this->json(['message' => 'Player not found'], 404);
-        }
         return $this->render('Players/show.html.twig', [
-            'players' => $players,
+            'player' => $player,
         ]);
     }
 
     #[Route("(/players/redirect", name: 'players_redirect')]
     public function redirectTo(Request $request): Response
     {
-        $playerID = (int) $request->request->get('playerID');
-        return $this->redirectToRoute('players_show', ['id' => $playerID]);
+        $playerID = (int) $request->query->get('playerID');
+        return $this->redirectToRoute('player_show', ['id' => $playerID]);
     }
 
 

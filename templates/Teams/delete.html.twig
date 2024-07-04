@@ -1,11 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block body %}
 
-    <h2> Elimina un equipo existente </h2>
-    <form id="delete-team-form">
-        <label for="delete-team-id">ID del equipo:</label>
-        <input type="number" id="delete-team-id" name="delete-team-id" min="1" required><br><br>
-        <button type="submit">Eliminar equipo</button>
-    </form><br><br>
+    <h2> Enhorabuena, has eliminado un equipo existente </h2>
+    <h4>El equipo <b>{{ team.nombre }}</b> ya no pertenece a La Liga.</h4>
 
 {% endblock %}

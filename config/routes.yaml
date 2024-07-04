@@ -21,18 +21,19 @@ team_redirect:
     controller: App\Controller\TeamController::redirectTo
 
 team_create:
-    path: /teams
+    path: /teams/create
     controller: App\Controller\TeamController::create
+    methods: [POST]
 
 team_update:
     path: /teams/{id}/update
     controller: App\Controller\TeamController::update
-    methods: [PUT]
+    methods: [POST]
 
 team_delete:
     path: /teams/{id}/delete
     controller: App\Controller\TeamController::delete
-    methods: [DELETE]
+    methods: [POST] [DELETE]
 
 coaches:
     path: /coaches
@@ -52,8 +53,8 @@ coach_redirect:
     path: /coaches/redirect
     controller: App\Controller\CoachController::redirectTo
 
-coaches_create:
-    path: /coaches/create
+coach_create:
+    path: /coaches
     controller: App\Controller\CoachController::create
     methods: [POST]
 
@@ -86,7 +87,7 @@ players_list:
     controller: App\Controller\PlayerController::list
     methods: [GET]
 
-players_show:
+player_show:
     path: /players/{id}
     controller: App\Controller\PlayerController::show
     methods: [GET]

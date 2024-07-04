@@ -74,15 +74,15 @@ class CoachController extends AbstractController
         ]);
     }
 
-    #[Route("(/coaches/redirect", name: 'coach_redirect')]
+    #[Route("(/coaches/redirect", name: 'coach_redirect', methods: ["POST"])]
     public function redirectTo(Request $request): Response
     {
-        $coachID = $request->query->get('coachId');
-        return $this->redirectToRoute('coach_show', ['id' => $coachID]);
+        $coach_id = (int) $request->request->get('coachID');
+        return $this->redirectToRoute('coach_show', ['id' => $coach_id]);
     }
 
-    #[Route("/coaches/create", name: "coaches_create", methods: ["GET", "POST"])]
-    public function create(Request $request, EntityManagerInterface $entityManager): JsonResponse
+    #[Route("/coaches", name: "coaches_create", methods: ["GET", "POST"])]
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
         $data = json_decode($request->getContent(), true);
 
@@ -112,7 +112,7 @@ class CoachController extends AbstractController
         $entityManager->persist($coach);
         $entityManager->flush();
 
-        return $this->json($coach, 201);
+        return $this->render('Coaches/list.html.twig');
     }
 
 
