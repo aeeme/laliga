@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <h1>Jugadores</h1>
+    <h2>Enhorabuena, el jugador {{ player.name }} se ha incorporado a La Liga.</h2>
+    {% if player.team %}
+        <p>{{ player.name }} ha fichado por el {{ player.team.nombre }}</p>
+    {% else %}
+        <p>{{ player.name }} de momento no ha fichado por ningún equipo</p>
+    {% endif %}
+
+    <b><p>Nuevo nombre: </p></b>
+    <p>{{ player.name }}</p>
+    <b><p>Nuevo email: </p></b>
+    <p>{{ player.email }}</p>
+    <b><p>Nuevo salario: </p></b>
+    <p>{{ player.salario }}</p>
+
+    <a href="/players"><h3>Volver al inicio</h3></a>
+
+{% endblock %}

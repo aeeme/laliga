@@ -96,27 +96,27 @@ players_redirect:
     path: /players/redirect
     controller: App\Controller\PlayerController::redirectTo
 
-players_create:
-    path: /players
+player_create:
+    path: /players/create
     controller: App\Controller\PlayerController::create
     methods: [POST]
 
-players_assign:
+player_assign:
     path: /players/{id}/assign-club
     controller: App\Controller\PlayerController::assignToClub
-    methods: [PUT]
+    methods: [POST] [PUT]
 
-players_remove:
+player_remove:
     path: /players/{id}/remove-club
     controller: App\Controller\PlayerController::removeFromClub
-    methods: [PUT]
+    methods: [POST] [PUT]
 
-players_update:
+player_update:
     path: /players/{id}/update
     controller: App\Controller\PlayerController::update
-    methods: [PUT]
+    methods: [POST] [PUT]
 
-players_delete:
+player_delete:
     path: /players/{id}/delete
     controller: App\Controller\PlayerController::delete
-    methods: [DELETE]
+    methods: [POST] [DELETE]

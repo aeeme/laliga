@@ -8,6 +8,8 @@
             <th style="border: 2px solid black">Nombre</th>
             <th style="border: 2px solid black">Email</th>
             <th style="border: 2px solid black">Salario</th>
+            <th style="border: 2px solid black">Equipo</th>
+            <th style="border: 2px solid black">ID Equipo</th>
         </tr>
         </thead>
         <tbody>
@@ -16,7 +18,54 @@
             <td style="border: 2px solid black"> {{ player.name }} </td>
             <td style="border: 2px solid black"> {{ player.email }} </td>
             <td style="border: 2px solid black"> {{ player.salario }} </td>
+            <td style="border: 2px solid black">
+                {% if player.team %}
+                    {{ player.team.nombre }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td style="border: 2px solid black">
+                {% if player.team %}
+                    {{ player.team.id }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
         </tr>
         </tbody>
-    </table>
+    </table><br><br>
+
+    <h2>Actualiza la información de {{ player.name }}</h2>
+    <form id="update-player" action="{{ path('player_update', {'id': player.id}) }}" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <label for="nombre">Nuevo nombre: </label>
+        <input type="text" id="nombre" name="nombre" maxlength="45"><br><br>
+        <label for="email">Nuevo email: </label>
+        <input type="email" name="email" id="email"><br><br>
+        <label for="salario">Nuevo salario</label>
+        <input type="number" name="salario" id="salario"><br><br>
+        <button type="reset">Borrar</button>
+        <button type="submit">Actualizar jugador</button>
+    </form><br><br>
+
+    <h2>Dar de alta en un equipo a {{ player.name }}</h2>
+    <form id="assign-player" action="{{ path('player_assign', {'id': player.id}) }}" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <label for="club_id">ID del club: </label>
+        <input type="number" name="club_id" id="club_id" min="1" required><br><br>
+        <label for="salario">Salario: </label>
+        <input type="number" name="salario" id="salario" min="0" required><br><br>
+        <a href="/teams/list"><button type="button">Ver clubs</button></a>
+        <button type="submit">Dar de alta</button>
+    </form><br><br>
+
+    <h2>Dar de baja a {{ player.name }} de su equipo actual</h2>
+    <form id="remove-player" action="{{ path('player_remove', {'id': player.id}) }}" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <button type="submit">Dar de baja</button>
+    </form>
+
+    <a href="/players"><h3>Volver al inicio</h3></a
+
 {% endblock %}

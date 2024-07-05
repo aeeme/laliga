@@ -8,6 +8,7 @@
             <th style="border: 2px solid black">Nombre</th>
             <th style="border: 2px solid black">Email</th>
             <th style="border: 2px solid black">Salario</th>
+            <th style="border: 2px solid black">Equipo</th>
         </tr>
         </thead>
         <tbody>
@@ -16,6 +17,13 @@
             <td style="border: 2px solid black">{{ coach.nombre }}</td>
             <td style="border: 2px solid black">{{ coach.email }}</td>
             <td style="border: 2px solid black">{{ coach.salario }}</td>
+            <td style="border: 2px solid black">
+                {% if coach.team %}
+                    {{ coach.team.nombre }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
         </tr>
         </tbody>
     </table><br><br>
@@ -44,11 +52,11 @@
         <button type="submit">Dar de alta</button>
     </form><br><br>
 
-{#    <h2>Dar de baja a {{ coach.nombre }} de su equipo actual</h2>#}
-{#    <form id="remove-coach" action="{{ path('coach_remove', {'id': coach.id}) }}" method="post">#}
-{#        <input type="hidden" name="_method" value="PUT">#}
-{#        <button type="submit">Dar de baja</button>#}
-{#    </form>#}
+    <h2>Dar de baja a {{ coach.nombre }} de su equipo actual</h2>
+    <form id="remove-coach" action="{{ path('coach_remove', {'id': coach.id}) }}" method="post">
+        <input type="hidden" name="_method" value="PUT">
+        <button type="submit">Dar de baja</button>
+    </form>
 
     <a href="/coaches"><h3>Volver al inicio</h3></a
 

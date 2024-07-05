@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    <h1>Jugadores</h1>
+    <h2>Enhorabuena, has dado de alta a un jugador en un equipo.</h2>
+
+    {% if player.team %}
+        <p>{{ player.name }} ha fichado por el {{ player.team.nombre }}</p>
+    {% endif %}
+
+    <a href="/players"><h3>Volver al inicio</h3></a>
+
+{% endblock %}

@@ -31,33 +31,9 @@ class PlayerController extends AbstractController
     }
 
     #[Route("/players/list", name: 'players_list', methods: ['GET'])]
-    public function list(Request $request, EntityManagerInterface $entityManager): Response
+    public function list(EntityManagerInterface $entityManager): Response
     {
-        $clubId = $request->query->get('clubId');
-        $filter = $request->query->get('filter');
-        $page = $request->query->getInt('page', 1);
-        $perPage = $request->query->getInt('perPage', 10);
-
-        $qb = $entityManager->createQueryBuilder();
-        $qb->select('p')
-            ->from(Player::class, 'p');
-
-        if ($clubId){
-            $qb->andWhere('p.team IS NOT NULL')
-               ->leftJoin('p.team', 't')
-               ->andWhere('t.id = :clubId')
-               ->setParameter('clubId', $clubId);
-        }
-
-        if ($filter){
-            $qb->andWhere('p.name LIKE :name')
-                ->setParameter('filter', '%'.$filter.'%');
-        }
-
-        $qb->setFirstResult(($page - 1) * $perPage)
-            ->setMaxResults($perPage);
-
-        $players = $qb->getQuery()->getResult();
+        $players = $entityManager->getRepository(Player::class)->findAll();
 
         return $this->render('Players/list.html.twig', [
             'players' => $players,
@@ -66,72 +42,72 @@ class PlayerController extends AbstractController
 
 
     #[Route("/players/{id}", name: 'player_show', methods: ['GET'])]
-    public function show(EntityManagerInterface $entityManager, Player $player): Response
+    public function show(Player $player): Response
     {
         return $this->render('Players/show.html.twig', [
             'player' => $player,
         ]);
     }
 
-    #[Route("(/players/redirect", name: 'players_redirect')]
+    #[Route("(/players/redirect", name: 'players_redirect', methods: ["POST"])]
     public function redirectTo(Request $request): Response
     {
-        $playerID = (int) $request->query->get('playerID');
+        $playerID = (int) $request->request->get('playerID');
         return $this->redirectToRoute('player_show', ['id' => $playerID]);
     }
 
 
-    #[Route("/players", name: 'players_create', methods: ['POST'])]
+    #[Route("/players/create", name: 'player_create', methods: ['GET', 'POST'])]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $data = json_decode($request->getContent(), true);
-
-        $nombre = $data['nombre'];
-        $salario = $data['salario'];
-        $email = $data['email'];
-        $clubId = $data['club_id'];
+        $nombre = $request->request->get('nombre');
+        $email = $request->request->get('email');
+        $salario = $request->request->get('salario');
+        $clubId = $request->request->get('club_id');
 
         $player = new Player();
         $player->setName($nombre);
         $player->setEmail($email);
 
-        if (isset($clubId)){
+        if ($clubId){
             $club = $entityManager->getRepository(Team::class)->find($clubId);
             if(!$club) {
                 return $this->json(['message' => 'Club not found'], 404);
             }
-
-            if ($club->getPresupuestoActual() < $player->getSalario()) {
-                return $this->json(['message' => 'Insufficient club budget'], 400);
+            if ($club->getPresupuestoActual() < $salario) {
+                return $this->json(['message' => 'Insufficient club budget'], 409);
             }
             $player->setTeam($club);
-            $club->setPresupuestoActual($club->getPresupuestoActual() - $data['salario']);
+            $club->setPresupuestoActual($club->getPresupuestoActual() - $salario);
             $club->addPlayer($player);
 
             $this->notifier->notify('You have been assigned to a new club.', $player->getEmail());
+        } else {
+            $salario = 0;
         }
         $player->setSalario($salario);
 
         $entityManager->persist($player);
         $entityManager->flush();
 
-        return $this->redirectToRoute('players_list');
+        return $this->render('Players/create.html.twig', [
+            'player' => $player,
+        ]);
     }
 
 
-    #[Route("/players/{id}/assign-club", name: 'players_assign', methods: ['PUT'])]
-    public function assignToClub(Player $player, Request $request, EntityManagerInterface $entityManager): JsonResponse
+    #[Route("/players/{id}/assign-club", name: 'player_assign', methods: ['PUT', 'POST'])]
+    public function assignToClub(Player $player, Request $request, EntityManagerInterface $entityManager): Response
     {
-        $data = json_decode($request->getContent(), true);
-        $clubId = $data['club_id'];
-        $salario = $data['salario'];
+        $clubId = $request->request->get('club_id');
+        $salario = $request->request->get('salario');
 
         $club = $entityManager->getRepository(Team::class)->find($clubId);
         if (!$club) {
             return $this->json(['message' => 'Club not found'], 404);
         }
         if ($player->getTeam() !==null) {
-            return $this->json(['message' => 'Players already assigned to a club'], 400);
+            return $this->json(['message' => 'Player already assigned to a club'], 400);
         }
         if ($club->getPresupuestoActual() < $salario) {
             return $this->json(['message' => 'Insufficient club budget'], 400);
@@ -145,12 +121,14 @@ class PlayerController extends AbstractController
 
         $this->notifier->notify('You have been asigned to a new club.', $player->getEmail());
 
-        return $this->json($player, 200);
+        return $this->render('Players/assign.html.twig', [
+            'player' => $player,
+        ]);
     }
 
 
-    #[Route("/players/{id}/remove-club", name: 'players_remove', methods: ['PUT'])]
-    public function removeFromClub(Player $player, EntityManagerInterface $entityManager): JsonResponse
+    #[Route("/players/{id}/remove-club", name: 'player_remove', methods: ['POST', 'PUT'])]
+    public function removeFromClub(Player $player, EntityManagerInterface $entityManager): Response
     {
         $club = $player->getTeam();
         if (!$club) {
@@ -158,6 +136,7 @@ class PlayerController extends AbstractController
         }
 
         $club->setPresupuestoActual($club->getPresupuestoActual() + $player->getSalario());
+        $player->setSalario(0);
 
         $player->setTeam(null);
         $club->removePlayer($player);
@@ -166,38 +145,68 @@ class PlayerController extends AbstractController
 
         $this->notifier->notify('You have been removed from your club.', $player->getEmail());
 
-        return $this->json(['message' => 'Players removed from club successfully'], 200);
+        return $this->render('Players/remove.html.twig', [
+            'player' => $player,
+        ]);
     }
 
 
-    #[Route("/players/{id}/update", name: 'players_update', methods: ['PUT'])]
-    public function update(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+    #[Route("/players/{id}/update", name: 'player_update', methods: ['POST', 'PUT'])]
+    public function update(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
         $player = $entityManager->getRepository(Player::class)->find($id);
         if (!$player) {
             return $this->json(['message' => 'Players not found'], 404);
         }
-        $data = json_decode($request->getContent(), true);
+        $newNombre = $request->request->get('nombre');
+        $newEmail = $request->request->get('email');
+        $newSalario = $request->request->get('salario');
 
-        $player->setName($data['nombre']);
-        $player->setSalario($data['salario']);
+        if (!$newNombre) {
+            $newNombre = $player->getName();
+        }
+        if (!$newEmail) {
+            $newEmail = $player->getEmail();
+        }
+        if (!$newSalario) {
+            $newSalario = $player->getSalario();
+        }
+
+        $club = $player->getTeam();
+        if (!$club) {
+            $newSalario = 0;
+        } else {
+            $club->setPresupuestoActual($club->getPresupuestoActual() + $player->getSalario());
+            $club->setPresupuestoActual($club->getPresupuestoActual() - $newSalario);
+        }
+
+        $player->setName($newNombre);
+        $player->setEmail($newEmail);
+        $player->setSalario($newSalario);
 
         $entityManager->flush();
 
-        return $this->json($player);
+        return $this->render('Players/update.html.twig', [
+            'player' => $player,
+        ]);
     }
 
-    #[Route("/players/{id}/delete", name: 'players_delete', methods: ['DELETE'])]
-    public function delete(Request $request, EntityManagerInterface $entityManager, int $id): JsonResponse
+    #[Route("/players/{id}/delete", name: 'player_delete', methods: ['POST', 'DELETE'])]
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
     {
         $player = $entityManager->getRepository(Player::class)->find($id);
         if (!$player) {
-            return $this->json(['message' => 'Players not found'], 404);
+            return $this->json(['message' => 'Player not found'], 404);
         }
-
+        $club = $player->getTeam();
+        if ($club) {
+            $club->setPresupuestoActual($club->getPresupuestoActual() + $player->getSalario());
+        }
         $entityManager->remove($player);
         $entityManager->flush();
 
-        return $this->json(['message' => 'Players successfully deleted']);
+        return $this->render('Players/delete.html.twig', [
+            'player' => $player,
+        ]);
     }
 }

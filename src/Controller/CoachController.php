@@ -32,33 +32,9 @@ class CoachController extends AbstractController
     }
 
     #[Route("/coaches/list", name: "coaches_list", methods: ["GET"])]
-    public function list(Request $request, EntityManagerInterface $entityManager): Response
+    public function list(EntityManagerInterface $entityManager): Response
     {
-        $clubId = $request->query->get('club_id');
-        $filter = $request->query->get('filter');
-        $page = $request->query->getInt('page', 1);
-        $perpage = $request->query->getInt('perpage', 10);
-
-        $qb = $entityManager->createQueryBuilder();
-        $qb->select('c')
-            ->from(Coach::class, 'c');
-
-        if ($clubId) {
-            $qb->andWhere('c.team IS NOT NULL')
-                ->leftjoin('c.team', 't')
-                ->andWhere('t.id = :clubId')
-                ->setParameter('clubId', $clubId);
-        }
-
-        if ($filter) {
-            $qb->andWhere('c.name LIKE :filter')
-                ->setParameter('filter', '%' . $filter . '%');
-        }
-
-        $qb->setFirstResult(($page - 1) * $perpage)
-            ->setMaxResults($perpage);
-
-        $coaches = $qb->getQuery()->getResult();
+        $coaches = $entityManager->getRepository(Coach::class)->findAll();
 
         return $this->render('Coaches/list.html.twig', [
             'coaches' => $coaches,
@@ -67,7 +43,7 @@ class CoachController extends AbstractController
 
 
     #[Route("/coaches/{id}", name: "coach_show", methods: ["GET"])]
-    public function show(EntityManagerInterface $entityManager, Coach $coach): Response
+    public function show(Coach $coach): Response
     {
         return $this->render('Coaches/show.html.twig', [
             'coach' => $coach,
@@ -93,7 +69,7 @@ class CoachController extends AbstractController
         $coach->setNombre($nombre);
         $coach->setEmail($email);
 
-        if (!$club_id == null) {
+        if ($club_id) {
             $club = $entityManager->getRepository(Team::class)->find($club_id);
             if (!$club) {
                 return $this->json(['message' => 'Club not found'], 404);
@@ -110,6 +86,8 @@ class CoachController extends AbstractController
             $club->setPresupuestoActual($club->getPresupuestoActual() - $salario);
 
             $this->notifier->notify('You have been assigned to a new club.', $coach->getEmail());
+        } else {
+            $salario = 0;
         }
         $coach->setSalario($salario);
 
@@ -169,13 +147,15 @@ class CoachController extends AbstractController
         $coach->setSalario(0);
 
         $coach->setTeam(null);
-        $club->removeCoach($coach);
+        $club->setCoach(null);
 
         $entityManager->flush();
 
         $this->notifier->notify('You have been removed from your club.', $coach->getEmail());
 
-        return $this->json(['message' => 'Coach removed from club successfully'], 200);
+        return $this->render('Coaches/remove.html.twig', [
+            'coach' => $coach,
+        ]);
     }
 
 
@@ -223,11 +203,15 @@ class CoachController extends AbstractController
     }
 
     #[Route("/coaches/{id}/delete", name: "coach_delete", methods: ["DELETE", "POST"])]
-    public function delete(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    public function delete(EntityManagerInterface $entityManager, int $id): Response
     {
         $coach = $entityManager->getRepository(Coach::class)->find($id);
         if (!$coach) {
             return $this->json(['message' => 'Coach not found'], 404);
+        }
+        $club = $coach->getTeam();
+        if ($club) {
+            $club->setPresupuestoActual($club->getPresupuestoActual() + $coach->getSalario());
         }
         $entityManager->remove($coach);
         $entityManager->flush();

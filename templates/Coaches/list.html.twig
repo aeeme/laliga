@@ -9,6 +9,7 @@
             <th style="border: 2px solid black">Salario</th>
             <th style="border: 2px solid black">Correo electrónico</th>
             <th style="border: 2px solid black">ID Equipo</th>
+            <th style="border: 2px solid black">Nombre equipo</th>
             <th style="border: 2px solid black">Actualizar</th>
             <th style="border: 2px solid black">Eliminar</th>
         </tr>
@@ -20,7 +21,20 @@
                 <td style="border: 2px solid black">{{ coach.nombre }}</td>
                 <td style="border: 2px solid black">{{ coach.salario }}</td>
                 <td style="border: 2px solid black">{{ coach.email }}</td>
-                <td style="border: 2px solid black"></td>
+                <td style="border: 2px solid black">
+                    {% if coach.team %}
+                        {{ coach.team.id }}
+                    {% else %}
+                        N/A
+                    {% endif%}
+                </td>
+                <td style="border: 2px solid black">
+                    {% if coach.team %}
+                        {{ coach.team.nombre }}
+                    {% else %}
+                        N/A
+                    {% endif%}
+                </td>
                 <td style="border: 2px solid black">
                     <a href="/coaches/{{ coach.id }}">
                         <button type="button">Actualizar</button>

@@ -8,6 +8,10 @@
             <th style="border: 2px solid black">Nombre</th>
             <th style="border: 2px solid black">Correo electrónico</th>
             <th style="border: 2px solid black">Salario</th>
+            <th style="border: 2px solid black">Nombre equipo</th>
+            <th style="border: 2px solid black">ID Equipo</th>
+            <th style="border: 2px solid black">Actualizar</th>
+            <th style="border: 2px solid black">Eliminar</th>
         </tr>
         </thead>
         <tbody>
@@ -17,8 +21,34 @@
                 <td style="border: 2px solid black">{{ player.name }}</td>
                 <td style="border: 2px solid black">{{ player.email }}</td>
                 <td style="border: 2px solid black">{{ player.salario }}</td>
+                <td style="border: 2px solid black">
+                    {% if player.team %}
+                    {{ player.team.nombre }}
+                    {% else %}
+                        N/A
+                    {% endif%}
+                </td>
+                <td style="border: 2px solid black">
+                    {% if player.team %}
+                    {{ player.team.id }}
+                    {% else %}
+                        N/A
+                    {% endif%}
+                </td>
+                <td style="border: 2px solid black">
+                    <a href="/players/{{ player.id }}">
+                        <button type="button">Actualizar</button>
+                    </a>
+                </td>
+                <td style="border: 2px solid black">
+                    <form id="delete-player-form" action="{{ path('player_delete', {'id': player.id}) }}" method="post" onsubmit="return confirm('Estás segur@ de que quieres eliminar a {{ player.name }} de La Liga?');">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit">Eliminar</button>
+                    </form>
+                </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
+    <a href="/players"><h3>Volver al inicio</h3></a>
 {% endblock %}

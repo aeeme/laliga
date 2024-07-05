@@ -48,7 +48,12 @@ class Team
 
     public function removePlayer(Player $player)
     {
-        $this->players->removeElement($player);
+        if ($this->players->removeElement($player)) {
+            if ($player->getTeam() === $this) {
+                $player->setTeam(null);
+            }
+        }
+        return $this;
     }
 
     public function getCoach(): ?coach
@@ -69,7 +74,7 @@ class Team
 
     public function removeCoach(Coach $coach): self
     {
-        if ($this->coach->removeElement($coach)) {
+        if ($this->coach->removeCoach($coach)) {
             if ($coach->getTeam() === $this) {
                 $coach->setTeam(null);
             }
