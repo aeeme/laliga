@@ -6,6 +6,7 @@ use App\Repository\TeamRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity]
@@ -19,10 +20,16 @@ class Team
     private $id;
 
     #[ORM\Column(type: 'string', length: 100)]
-    private $nombre;
+//    #[Assert\Length(max: 100)]
+//    #[Assert\NotBlank]
+    private string $nombre;
+
 
     #[ORM\Column(type: 'float')]
-    private $presupuesto_actual;
+//    #[Assert\NotBlank]
+//    #[Assert\Type(type: 'numeric', message: 'El presupuesto debe tener un valor numérico.')]
+//    #[Assert\GreaterThanOrEqual(value:0, message:'El presupuesto debe ser mayor o igual a 0.')]
+    private int $presupuesto_actual;
 
     #[ORM\OneToMany(targetEntity: Player::class, mappedBy: 'team')]
     private $players;
